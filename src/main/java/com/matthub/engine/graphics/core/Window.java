@@ -10,12 +10,12 @@ import java.util.Map;
 import javax.swing.*;
 
 import com.matthub.engine.Engine;
-import com.matthub.engine.graphics.display.DisplaySettings;
 import com.matthub.engine.graphics.display.DisplayStrategy;
 import com.matthub.engine.graphics.display.strategy.BorderlessStrategy;
 import com.matthub.engine.graphics.display.strategy.FullscreenStrategy;
 import com.matthub.engine.graphics.display.strategy.WindowedStrategy;
 import com.matthub.engine.graphics.display.DisplayMode;
+import com.matthub.engine.settings.WindowSettings;
 
 public class Window {
     private int width;
@@ -32,7 +32,7 @@ public class Window {
     private final JFrame frame;
     private final BufferStrategy bufferStrategy;
 
-    public Window(Engine engine, String title, DisplaySettings settings) {            
+    public Window(Engine engine, String title, WindowSettings settings) {
         this.canvas = new Canvas();
 
         this.frame = new JFrame(title);

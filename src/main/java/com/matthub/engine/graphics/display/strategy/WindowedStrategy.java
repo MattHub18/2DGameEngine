@@ -5,12 +5,12 @@ import javax.swing.JFrame;
 import java.awt.Canvas;
 
 import com.matthub.engine.graphics.core.Window;
-import com.matthub.engine.graphics.display.DisplaySettings;
 import com.matthub.engine.graphics.display.DisplayStrategy;
+import com.matthub.engine.settings.WindowSettings;
 
 public class WindowedStrategy implements DisplayStrategy {
     @Override
-    public void apply(JFrame frame, Canvas canvas, DisplaySettings settings, Window window) {
+    public void apply(JFrame frame, Canvas canvas, WindowSettings settings, Window window) {
         window.setScale(settings.getScale());
         window.setWidth(settings.getWidth());
         window.setHeight(settings.getHeight());

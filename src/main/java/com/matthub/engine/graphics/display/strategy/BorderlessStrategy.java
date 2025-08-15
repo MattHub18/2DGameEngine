@@ -6,12 +6,12 @@ import javax.swing.JFrame;
 import java.awt.Canvas;
 
 import com.matthub.engine.graphics.core.Window;
-import com.matthub.engine.graphics.display.DisplaySettings;
 import com.matthub.engine.graphics.display.DisplayStrategy;
+import com.matthub.engine.settings.WindowSettings;
 
 public class BorderlessStrategy implements DisplayStrategy {
     @Override
-    public void apply(JFrame frame, Canvas canvas, DisplaySettings settings, Window window) {
+    public void apply(JFrame frame, Canvas canvas, WindowSettings settings, Window window) {
         Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
         window.setWidth(screenSize.width);
         window.setHeight(screenSize.height);

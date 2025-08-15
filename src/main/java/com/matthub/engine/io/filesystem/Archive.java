@@ -69,6 +69,9 @@ public class Archive {
 
     public static void loadAll() {
         _load(ResourceType.CONFIG,  "config", ResourceLocation.INTERNAL);
+        _load(ResourceType.TEXTURE,  "resources/textures", ResourceLocation.EXTERNAL);
+        _load(ResourceType.FONT,  "resources/fonts", ResourceLocation.EXTERNAL);
+        _load(ResourceType.FONT,  "fonts", ResourceLocation.INTERNAL);
     }
 
     public static String get(ResourceType type, String name) {

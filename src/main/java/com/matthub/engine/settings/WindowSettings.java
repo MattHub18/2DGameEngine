@@ -1,22 +1,21 @@
-package com.matthub.engine.graphics.display;
+package com.matthub.engine.settings;
 
-import com.matthub.engine.io.filesystem.Archive;
+import com.matthub.engine.graphics.display.DisplayMode;
+import com.matthub.engine.io.IO;
+import com.matthub.engine.util.ResourceLoadException;
 
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.Properties;
 
-public class DisplaySettings {
+public class WindowSettings {
     private final DisplayMode mode;
     private final int width;
     private final int height;
     private final float scale;
 
-    public DisplaySettings(String confFilename) {
-        try (InputStream in = Archive.class.getClassLoader().getResourceAsStream(confFilename)) {
-            if (in == null) {
-                throw new IllegalStateException("[DisplaySettings] Missing config file: " + confFilename);
-            }
+    public WindowSettings(String confFilename) {
+        try (InputStream in = IO.loadStream(confFilename)) {
             Properties props = new Properties();
             props.load(in);
             this.mode = DisplayMode.fromString(props.getProperty("mode"));
@@ -24,7 +23,7 @@ public class DisplaySettings {
             this.height = Integer.parseInt(props.getProperty("height"));
             this.scale = Float.parseFloat(props.getProperty("scale"));
         } catch (IOException | NullPointerException e) {
-            throw new IllegalStateException("[DisplaySettings] Incorrect config file: " + confFilename);
+            throw new ResourceLoadException("[DisplaySettings] Incorrect config file: " + confFilename);
         }
     }
 
