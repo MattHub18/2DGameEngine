@@ -1,11 +1,26 @@
 package com.matthub.engine;
 
+import com.matthub.engine.graphics.core.Window;
+import com.matthub.engine.graphics.display.DisplaySettings;
+import com.matthub.engine.io.filesystem.Archive;
+import com.matthub.engine.io.filesystem.Filesystem;
+import com.matthub.engine.io.filesystem.ResourceType;
+
 public class Engine implements Runnable{
     private volatile boolean running;
-    private Thread gameThread;
+    private Window window;
 
     public Engine(String title) {
         this.running = false;
+        try {
+            Filesystem.load();
+            DisplaySettings settings = new DisplaySettings(Archive.get(ResourceType.CONFIG, "window"));
+            window = new Window(this, title, settings);
+        }catch(IllegalStateException e) {
+            System.err.println("[Engine] Failed to load: " + e.getMessage());
+            Filesystem.clear();
+            System.exit(1);
+        }
     }
 
     //start engine
@@ -13,8 +28,8 @@ public class Engine implements Runnable{
         if (this.running)
             return;
 
-        this.gameThread = new Thread(this);
-        this.gameThread.start();
+        Thread gameThread = new Thread(this);
+        gameThread.start();
     }
 
     //stop engine
@@ -23,6 +38,9 @@ public class Engine implements Runnable{
             return;
 
         this.running = false;
+        // Close/clear components
+        Filesystem.clear();
+        window.close();
     }
 
     @Override
@@ -76,8 +94,8 @@ public class Engine implements Runnable{
             try {
                 Thread.sleep(1);
             } catch (InterruptedException e) {
-                Thread.currentThread().interrupt();
                 stop();
+                Thread.currentThread().interrupt();
             }
         }
     }
