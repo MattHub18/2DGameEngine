@@ -39,18 +39,7 @@ public class PixelRender implements RenderInterface{
         }
     }
 
-    public void setPixel(int x, int y, int value, boolean movable) {
-        int camX = 0;
-        int camY = 0;
-
-        //if(movable) {
-        //    camX = camera.getCamX();
-        //    camY = camera.getCamY();
-        //}
-
-        x-=camX;
-        y-=camY;
-
+    public void setPixel(int x, int y, int value) {
         if (isOffScreen(x, y))
             return;
 
@@ -72,18 +61,7 @@ public class PixelRender implements RenderInterface{
         }
     }
 
-    public void setBrightness(int x, int y, boolean value, boolean movable) {
-        int camX = 0;
-        int camY = 0;
-
-        //if(movable) {
-        //    camX = camera.getCamX();
-        //    camY = camera.getCamY();
-        //}
-
-        x-=camX;
-        y-=camY;
-
+    public void setBrightness(int x, int y, boolean value) {
         if (isOffScreen(x, y))
             return;
         brightness[x+y* window.getWidth()] = value;
@@ -101,18 +79,7 @@ public class PixelRender implements RenderInterface{
         return lightPixels[x + y * window.getWidth()];
     }
 
-    public void setLightPixel(int x, int y, int value, boolean movable) {
-        int camX = 0;
-        int camY = 0;
-
-        //if(movable) {
-        //    camX = camera.getCamX();
-        //    camY = camera.getCamY();
-        //}
-
-        x-=camX;
-        y-=camY;
-
+    public void setLightPixel(int x, int y, int value) {
         if (isOffScreen(x, y))
             return;
         lightPixels[x + y * window.getWidth()] = value;

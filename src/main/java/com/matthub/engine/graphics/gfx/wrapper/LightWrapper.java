@@ -6,13 +6,11 @@ public class LightWrapper {
     private final Light light;
     private final int offX;
     private final int offY;
-    private final boolean movable;
 
-    public LightWrapper(Light light, int offX, int offY, boolean movable) {
+    public LightWrapper(Light light, int offX, int offY) {
         this.light = light;
         this.offX = offX;
         this.offY = offY;
-        this.movable = movable;
     }
 
     public Light getLight() {
@@ -25,9 +23,5 @@ public class LightWrapper {
 
     public int getOffY() {
         return offY;
-    }
-
-    public boolean isMovable() {
-        return movable;
     }
 }

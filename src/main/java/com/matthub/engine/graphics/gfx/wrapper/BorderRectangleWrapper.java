@@ -6,8 +6,8 @@ import com.matthub.engine.graphics.renders.RectangleRender;
 public class BorderRectangleWrapper extends RectangleWrapper{
     private final int thickness;
 
-    public BorderRectangleWrapper(Rectangle rectangle, int offX, int offY, int thickness, boolean movable, int color) {
-        super(rectangle, offX, offY, movable, color);
+    public BorderRectangleWrapper(Rectangle rectangle, int offX, int offY, int thickness, int color) {
+        super(rectangle, offX, offY, color);
         this.thickness = thickness;
     }
 

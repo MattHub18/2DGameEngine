@@ -37,23 +37,23 @@ public class Render {
         this.textRender.clear();
     }
 
-    public void addRectangle(int offX, int offY, int width, int height, boolean movable, int color) {
-        this.rectangleRender.addRectangle(offX, offY, width, height, movable, color);
+    public void addRectangle(int offX, int offY, int width, int height, int color) {
+        this.rectangleRender.addRectangle(offX, offY, width, height, color);
     }
 
-    public void addBorderRectangle(int offX, int offY, int width, int height, int thickness, boolean movable, int color) {
-        this.rectangleRender.addBorderRectangle(offX, offY, width, height, thickness, movable, color);
+    public void addBorderRectangle(int offX, int offY, int width, int height, int thickness, int color) {
+        this.rectangleRender.addBorderRectangle(offX, offY, width, height, thickness, color);
     }
 
-    public void addLight(Light light, int offX, int offY, boolean movable) {
-        this.lightRender.addLight(light, offX, offY, movable);
+    public void addLight(Light light, int offX, int offY) {
+        this.lightRender.addLight(light, offX, offY);
     }
 
-    public void addImage(Image image, int offX, int offY, boolean movable, boolean transparent) {
-        this.imageRender.addImage(image, offX, offY, movable, transparent);
+    public void addImage(Image image, int offX, int offY, boolean transparent) {
+        this.imageRender.addImage(image, offX, offY, transparent);
     }
 
-    public void addText(Text text, int offX, int offY, boolean movable) {
-        this.textRender.addText(text, offX, offY, movable);
+    public void addText(Text text, int offX, int offY) {
+        this.textRender.addText(text, offX, offY);
     }
 }

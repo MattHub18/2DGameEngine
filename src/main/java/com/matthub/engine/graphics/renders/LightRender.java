@@ -17,7 +17,7 @@ public class LightRender implements RenderInterface {
     @Override
     public void process() {
         for (LightWrapper light : this.lights) {
-            drawLight(light.getLight(), light.getOffX(), light.getOffY(), light.isMovable());
+            drawLight(light);
         }
     }
 
@@ -26,20 +26,23 @@ public class LightRender implements RenderInterface {
         this.lights.clear();
     }
 
-    public void addLight(Light light, int offX, int offY, boolean movable) {
-        this.lights.add(new LightWrapper(light, offX, offY, movable));
+    public void addLight(Light light, int offX, int offY) {
+        this.lights.add(new LightWrapper(light, offX, offY));
     }
 
-    private void drawLight(Light light, int offX, int offY, boolean movable) {
+    private void drawLight(LightWrapper wrapper) {
+        Light light = wrapper.getLight();
+        int offX = wrapper.getOffX();
+        int offY = wrapper.getOffY();
         for (int i = 0; i <= light.getDiameter(); i++) {
-            drawLightLine(light, light.getRadius(), light.getRadius(), i, 0, offX, offY, movable);
-            drawLightLine(light, light.getRadius(), light.getRadius(), i, light.getDiameter(), offX, offY, movable);
-            drawLightLine(light, light.getRadius(), light.getRadius(), 0, i, offX, offY, movable);
-            drawLightLine(light, light.getRadius(), light.getRadius(), light.getDiameter(), i, offX, offY, movable);
+            drawLightLine(light, light.getRadius(), light.getRadius(), i, 0, offX, offY);
+            drawLightLine(light, light.getRadius(), light.getRadius(), i, light.getDiameter(), offX, offY);
+            drawLightLine(light, light.getRadius(), light.getRadius(), 0, i, offX, offY);
+            drawLightLine(light, light.getRadius(), light.getRadius(), light.getDiameter(), i, offX, offY);
         }
     }
 
-    private void drawLightLine(Light light, int x0, int y0, int x1, int y1, int offX, int offY, boolean movable) {
+    private void drawLightLine(Light light, int x0, int y0, int x1, int y1, int offX, int offY) {
         int dx = Math.abs(x1 - x0);
         int dy = Math.abs(y1 - y0);
         int sx = x0 < x1 ? 1 : -1;
@@ -60,7 +63,7 @@ public class LightRender implements RenderInterface {
             if (!this.render.getBrightness(screenX, screenY))
                 return;
 
-            setLightPixels(screenX, screenY, lightColor, movable);
+            setLightPixels(screenX, screenY, lightColor);
 
             if (x0 == x1 && y0 == y1)
                 break;
@@ -77,11 +80,11 @@ public class LightRender implements RenderInterface {
         }
     }
 
-    private void setLightPixels(int x, int y, int value, boolean movable) {
+    private void setLightPixels(int x, int y, int value) {
         int baseColor = render.getLightPixel(x, y);
         int maxRed = Math.max(((baseColor >> 16) & 0xff), ((value >> 16) & 0xff));
         int maxGreen = Math.max(((baseColor >> 8) & 0xff), ((value >> 8) & 0xff));
         int maxBlue = Math.max(((baseColor) & 0xff), ((value) & 0xff));
-        this.render.setLightPixel(x, y, (maxRed << 16 | maxGreen << 8 | maxBlue), movable);
+        this.render.setLightPixel(x, y, (maxRed << 16 | maxGreen << 8 | maxBlue));
     }
 }

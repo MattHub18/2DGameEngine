@@ -28,27 +28,27 @@ public class RectangleRender implements RenderInterface{
         this.rectangles.clear();
     }
 
-    public void addRectangle(int offX, int offY, int width, int height, boolean movable, int color) {
-        this.rectangles.add(new RectangleWrapper(new Rectangle(width, height), offX, offY, movable, color));
+    public void addRectangle(int offX, int offY, int width, int height, int color) {
+        this.rectangles.add(new RectangleWrapper(new Rectangle(width, height), offX, offY, color));
     }
 
-    public void addBorderRectangle(int offX, int offY, int width, int height, int thickness, boolean movable, int color) {
-        this.rectangles.add(new BorderRectangleWrapper(new Rectangle(width, height), offX, offY, thickness, movable, color));
+    public void addBorderRectangle(int offX, int offY, int width, int height, int thickness, int color) {
+        this.rectangles.add(new BorderRectangleWrapper(new Rectangle(width, height), offX, offY, thickness, color));
     }
 
-    private void drawEdges(int x0, int y0, int w, int h, int color, boolean movable) {
+    private void drawEdges(int x0, int y0, int w, int h, int color) {
         if (w <= 0 || h <= 0) return;
 
         // vertical edges
         for (int y = 0; y < h; y++) {
-            render.setPixel(x0, y0 + y, color, movable);
-            render.setPixel(x0 + w - 1, y0 + y, color, movable);
+            render.setPixel(x0, y0 + y, color);
+            render.setPixel(x0 + w - 1, y0 + y, color);
         }
 
         // horizontal edges
         for (int x = 1; x < w - 1; x++) {
-            render.setPixel(x0 + x, y0, color, movable);
-            render.setPixel(x0 + x, y0 + h - 1, color, movable);
+            render.setPixel(x0 + x, y0, color);
+            render.setPixel(x0 + x, y0 + h - 1, color);
         }
     }
 
@@ -57,13 +57,12 @@ public class RectangleRender implements RenderInterface{
         int offY = wrapper.getOffY();
         int width = wrapper.getRectangle().getWidth();
         int height = wrapper.getRectangle().getHeight();
-        boolean movable = wrapper.isMovable();
         int color = wrapper.getColor();
 
-        drawEdges(offX, offY, width, height, color, movable);
+        drawEdges(offX, offY, width, height, color);
         for (int y = 1; y < height - 1; y++) {
             for (int x = 1; x < width - 1; x++) {
-                render.setPixel(offX + x, offY + y, color, movable);
+                render.setPixel(offX + x, offY + y, color);
             }
         }
     }
@@ -73,12 +72,11 @@ public class RectangleRender implements RenderInterface{
         int offY = wrapper.getOffY();
         int width = wrapper.getRectangle().getWidth();
         int height = wrapper.getRectangle().getHeight();
-        boolean movable = wrapper.isMovable();
         int color = wrapper.getColor();
         int thickness = wrapper.getThickness();
 
         for (int t = 0; t < thickness; t++) {
-            drawEdges(offX + t, offY + t, width - t * 2, height - t * 2, color, movable);
+            drawEdges(offX + t, offY + t, width - t * 2, height - t * 2, color);
         }
     }
 }

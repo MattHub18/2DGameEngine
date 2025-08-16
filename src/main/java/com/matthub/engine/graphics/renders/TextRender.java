@@ -17,7 +17,7 @@ public class TextRender implements RenderInterface{
     @Override
     public void process() {
         for (TextWrapper text : this.texts) {
-            drawText(text.getText(), text.getOffX(), text.getOffY(), text.isMovable());
+            drawText(text);
         }
     }
 
@@ -26,11 +26,14 @@ public class TextRender implements RenderInterface{
         this.texts.clear();
     }
 
-    public void addText(Text text, int offX, int offY, boolean movable) {
-        this.texts.add(new TextWrapper(text, offX, offY, movable));
+    public void addText(Text text, int offX, int offY) {
+        this.texts.add(new TextWrapper(text, offX, offY));
     }
 
-    private void drawText(Text text, int offX, int offY, boolean movable) {
+    private void drawText(TextWrapper wrapper) {
+        Text text = wrapper.getText();
+        int offX = wrapper.getOffX();
+        int offY = wrapper.getOffY();
         String txt = text.getText();
 
         int offset = 0;
@@ -41,7 +44,7 @@ public class TextRender implements RenderInterface{
                 for (int x = 0; x < charWidth; x++) {
                     int pixel = text.getFontImage().getPixels()[(x + text.getOffsets()[unicode]) + y * text.getFontImage().getWidth()];
                     if ((pixel & 0xFF000000) != 0) {
-                        this.render.setPixel(x + offset + offX, y + offY, pixel, movable);
+                        this.render.setPixel(x + offset + offX, y + offY, pixel);
                     }
                 }
             }

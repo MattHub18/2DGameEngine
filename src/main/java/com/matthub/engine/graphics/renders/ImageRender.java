@@ -18,7 +18,7 @@ public class ImageRender implements RenderInterface {
     @Override
     public void process() {
         for (ImageWrapper img : this.images) {
-            drawImage(img.getImage(), img.getOffX(), img.getOffY(), img.isMovable(), img.isTransparent());
+            drawImage(img);
         }
     }
 
@@ -27,15 +27,19 @@ public class ImageRender implements RenderInterface {
         this.images.clear();
     }
 
-    public void addImage(Image image, int offX, int offY, boolean movable, boolean transparent) {
-        this.images.add(new ImageWrapper(image, offX, offY, movable, transparent));
+    public void addImage(Image image, int offX, int offY, boolean transparent) {
+        this.images.add(new ImageWrapper(image, offX, offY, transparent));
     }
 
-    private void drawImage(Image image, int offX, int offY, boolean movable, boolean transparent) {
+    private void drawImage(ImageWrapper wrapper) {
+        Image image = wrapper.getImage();
+        int offX = wrapper.getOffX();
+        int offY = wrapper.getOffY();
+        boolean transparent = wrapper.isTransparent();
         for (int y = 0; y < image.getHeight(); y++) {
             for (int x = 0; x < image.getWidth(); x++) {
-                this.render.setPixel(x + offX, y + offY, image.getPixels()[x + y * image.getWidth()], movable);
-                this.render.setBrightness(x + offX, y + offY, transparent, movable);
+                this.render.setPixel(x + offX, y + offY, image.getPixels()[x + y * image.getWidth()]);
+                this.render.setBrightness(x + offX, y + offY, transparent);
             }
         }
     }

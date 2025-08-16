@@ -2,13 +2,14 @@ package com.matthub.engine;
 
 import com.matthub.engine.graphics.core.Render;
 import com.matthub.engine.graphics.core.Window;
-import com.matthub.engine.settings.GraphicSettings;
-import com.matthub.engine.settings.WindowSettings;
-import com.matthub.engine.graphics.gfx.*;
 import com.matthub.engine.graphics.gfx.Font;
+import com.matthub.engine.graphics.gfx.Text;
+import com.matthub.engine.input.Controller;
 import com.matthub.engine.io.filesystem.Archive;
 import com.matthub.engine.io.filesystem.Filesystem;
 import com.matthub.engine.io.filesystem.ResourceType;
+import com.matthub.engine.settings.GraphicSettings;
+import com.matthub.engine.settings.WindowSettings;
 import com.matthub.engine.util.ResourceLoadException;
 
 import java.awt.*;
@@ -17,14 +18,16 @@ public class Engine implements Runnable{
     private volatile boolean running;
     private Window window;
     private Render render;
+    private Controller controller;
 
     public Engine(String title) {
         this.running = false;
         try {
             Filesystem.load();
             WindowSettings settings = new WindowSettings(Archive.get(ResourceType.CONFIG, "window"));
-            window = new Window(this, title, settings);
-            render = new Render(window, new GraphicSettings(Archive.get(ResourceType.CONFIG, "graphic")));
+            this.window = new Window(this, title, settings);
+            this.render = new Render(window, new GraphicSettings(Archive.get(ResourceType.CONFIG, "graphic")));
+            this.controller = new Controller(window);
         }catch(IllegalStateException e) {
             System.err.println("[Engine] Failed to load: " + e.getMessage());
             Filesystem.clear();
@@ -69,20 +72,20 @@ public class Engine implements Runnable{
 
         long renderAccumulator = 0;
 
-        while (running) {
+        while (this.running) {
             long now = System.nanoTime();
             long elapsed = now - lastTime;
             lastTime = now;
-
+        
             delta += elapsed / NS_PER_UPDATE;
             renderAccumulator += elapsed;
-
+        
             // Fixed-timestep update
             while (delta >= 1) {
                 update();
                 delta--;
             }
-
+        
             // Render with capped FPS
             if (renderAccumulator >= NS_PER_FRAME) {
                 try {
@@ -94,14 +97,14 @@ public class Engine implements Runnable{
                 frames++;
                 renderAccumulator = 0; // reset after rendering
             }
-
+        
             // FPS calculation every second
             if (System.currentTimeMillis() - lastFpsTime >= 1000) {
                 fps = frames;
                 frames = 0;
                 lastFpsTime += 1000;
             }
-
+        
             // Reduce CPU usage
             try {
                 Thread.sleep(1);
@@ -112,19 +115,19 @@ public class Engine implements Runnable{
         //shutdown
         Filesystem.clear();
         this.render.clear();
-        window.close();
+        this.window.close();
     }
 
     //update main logic
     private void update() {
-
+        this.controller.update();
     }
 
     //render main logic
     private void render(int fps) {
         this.render.clear();
         Font font = new Font(Archive.get(ResourceType.FONT, "texgyrepagella"), 7, Color.WHITE.getRGB());
-        this.render.addText(new Text("FPS: " + fps, font), 0, 0, false);
+        this.render.addText(new Text("FPS: " + fps, font), 0, 0);
         this.render.process();
         this.window.render();
     }
