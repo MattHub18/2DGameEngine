@@ -82,7 +82,7 @@ public class Engine implements Runnable{
         
             // Fixed-timestep update
             while (delta >= 1) {
-                update();
+                update((float)(1.0 / TARGET_UPS));
                 delta--;
             }
         
@@ -119,7 +119,7 @@ public class Engine implements Runnable{
     }
 
     //update main logic
-    private void update() {
+    private void update(float dt) {
         this.controller.update();
     }
 

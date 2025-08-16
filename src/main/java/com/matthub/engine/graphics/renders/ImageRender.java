@@ -27,19 +27,19 @@ public class ImageRender implements RenderInterface {
         this.images.clear();
     }
 
-    public void addImage(Image image, int offX, int offY, boolean transparent) {
-        this.images.add(new ImageWrapper(image, offX, offY, transparent));
+    public void addImage(Image image, int offX, int offY, boolean blocksLight) {
+        this.images.add(new ImageWrapper(image, offX, offY, blocksLight));
     }
 
     private void drawImage(ImageWrapper wrapper) {
         Image image = wrapper.getImage();
         int offX = wrapper.getOffX();
         int offY = wrapper.getOffY();
-        boolean transparent = wrapper.isTransparent();
+        boolean blocksLight = wrapper.doesBlockLight();
         for (int y = 0; y < image.getHeight(); y++) {
             for (int x = 0; x < image.getWidth(); x++) {
                 this.render.setPixel(x + offX, y + offY, image.getPixels()[x + y * image.getWidth()]);
-                this.render.setBrightness(x + offX, y + offY, transparent);
+                this.render.setBrightness(x + offX, y + offY, blocksLight);
             }
         }
     }

@@ -49,8 +49,8 @@ public class Render {
         this.lightRender.addLight(light, offX, offY);
     }
 
-    public void addImage(Image image, int offX, int offY, boolean transparent) {
-        this.imageRender.addImage(image, offX, offY, transparent);
+    public void addImage(Image image, int offX, int offY, boolean blocksLight) {
+        this.imageRender.addImage(image, offX, offY, blocksLight);
     }
 
     public void addText(Text text, int offX, int offY) {

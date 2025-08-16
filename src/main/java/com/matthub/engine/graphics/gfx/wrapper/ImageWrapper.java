@@ -6,13 +6,13 @@ public class ImageWrapper {
     private final Image image;
     private final int offX;
     private final int offY;
-    private final boolean transparent;
+    private final boolean blocksLight;
 
-    public ImageWrapper(Image image, int offX, int offY, boolean transparent) {
+    public ImageWrapper(Image image, int offX, int offY, boolean blocksLight) {
         this.image = image;
         this.offX = offX;
         this.offY = offY;
-        this.transparent = transparent;
+        this.blocksLight = blocksLight;
     }
 
     public Image getImage() {
@@ -27,8 +27,8 @@ public class ImageWrapper {
         return offY;
     }
 
-    public boolean isTransparent() {
-        return transparent;
+    public boolean doesBlockLight() {
+        return blocksLight;
     }
 }
 
