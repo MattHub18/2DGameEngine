@@ -5,6 +5,7 @@ import java.net.URISyntaxException;
 import java.net.URL;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.function.Function;
 
 public class Archive {
 
@@ -33,15 +34,7 @@ public class Archive {
         if (!dir.exists() || !dir.isDirectory()) {
             throw new IllegalStateException("[Archive] Missing external resource folder: " + rootDir);
         }
-        File[] files = dir.listFiles();
-        if (files != null) {
-            for (File f : files) {
-                if (f.isFile()) {
-                    String key = toKey(f.getName());
-                    map.putIfAbsent(key, f.getAbsolutePath());
-                }
-            }
-        }
+        loadFiles(dir, map, f -> toKey(f.getName()), File::getAbsolutePath);
     }
 
     private static void loadInternal(String rootDir, Map<String, String> map) {
@@ -53,17 +46,23 @@ public class Archive {
             if (!dir.exists() || !dir.isDirectory()) {
                 throw new IllegalStateException("[Archive] Missing internal resource folder: " + rootDir);
             }
-            File[] files = dir.listFiles();
-            if (files != null) {
-                for (File f : files) {
-                    if (f.isFile()) {
-                        String key = toKey(f.getName());
-                        map.putIfAbsent(key, rootDir + "/" + f.getName());
-                    }
+            loadFiles(dir, map, f -> toKey(f.getName()), f -> rootDir + "/" + f.getName());
+        } catch (URISyntaxException e) {
+            throw new IllegalStateException("[Archive] Missing internal resource folder: " + rootDir);
+        }
+    }
+
+    private static void loadFiles(File dir, Map<String, String> map, Function<File, String> keyMapper, Function<File, String> valueMapper) {
+        File[] files = dir.listFiles();
+        if (files != null) {
+            for (File f : files) {
+                if (f.isFile()) {
+                    String key = keyMapper.apply(f);
+                    map.putIfAbsent(key, valueMapper.apply(f));
+                } else if (f.isDirectory()) {
+                    loadFiles(f, map, keyMapper, valueMapper);
                 }
             }
-        }catch(URISyntaxException e){
-            throw new IllegalStateException("[Archive] Missing internal resource folder: " + rootDir);
         }
     }
 
@@ -72,6 +71,7 @@ public class Archive {
         _load(ResourceType.TEXTURE,  "resources/textures", ResourceLocation.EXTERNAL);
         _load(ResourceType.FONT,  "resources/fonts", ResourceLocation.EXTERNAL);
         _load(ResourceType.FONT,  "fonts", ResourceLocation.INTERNAL);
+        _load(ResourceType.MAP,  "resources/map", ResourceLocation.EXTERNAL);
     }
 
     public static String get(ResourceType type, String name) {

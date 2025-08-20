@@ -1,5 +1,6 @@
 package com.matthub.engine.entities;
 
+import com.matthub.engine.graphics.core.Camera;
 import com.matthub.engine.graphics.core.Render;
 import com.matthub.engine.physics.collision.AxisAlignedBoundingBox;
 import com.matthub.engine.physics.geom.Vector2D;
@@ -63,10 +64,11 @@ public abstract class Entity {
             sprite.update(dt);
     }
 
-    public void render(Render r) {
+    public void render(Render r, Camera camera) {
+        Vector2D renderPosition = new Vector2D(position.x - camera.getCamX(), position.y - camera.getCamY());
         Sprite sprite = animations.get(state);
         if (sprite != null) {
-            sprite.render(r, position, facing, blocksLight);
+            sprite.render(r, renderPosition, facing, blocksLight);
         }
     }
 }

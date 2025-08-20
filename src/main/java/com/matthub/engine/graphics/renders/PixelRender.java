@@ -64,7 +64,7 @@ public class PixelRender implements RenderInterface{
     public void setBrightness(int x, int y, boolean value) {
         if (isOffScreen(x, y))
             return;
-        brightness[x+y* window.getWidth()] = value;
+        brightness[x+y* window.getWidth()] = !value;
     }
 
     public boolean getBrightness(int x, int y) {
